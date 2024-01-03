@@ -12,7 +12,7 @@ const userSchema = new Schema(
             required: [true, "Last name is required."],
             trim: true,
         },
-        dateOfBirth:{
+        dob:{
             type: Date,
             required: [true, "Date of birth is required."]
         },
