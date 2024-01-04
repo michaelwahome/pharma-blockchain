@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { processRegisterCompany} from "@/lib/action";
-import { useFormState } from "react-dom";
+import { useFormState, useFormStatus } from "react-dom";
 
 const RegisterCompanyForm = () =>{
     const initialState = { message: null, errors: {} };
@@ -184,12 +184,7 @@ const RegisterCompanyForm = () =>{
                 </div>
             </div>
 
-            <button
-            className="bg-green-800 text-white py-2 px-4 rounded-full hover:bg-green-600 focus:outline-none focus:ring focus:border-green-300"
-            type="submit"
-            >
-            Register
-            </button>
+            <RegisterCompanyButton />
 
             <p className="mt-4 text-sm text-gray-600">
                 Already have an account?   
@@ -201,6 +196,21 @@ const RegisterCompanyForm = () =>{
             </p>
         </form>
     )
+}
+
+function RegisterCompanyButton() {
+    const { pending } = useFormStatus();
+   
+    return (
+      <button className="bg-green-800 text-white py-2 px-4 rounded-full hover:bg-green-600 
+      focus:outline-none focus:ring focus:border-green-300 aria-disabled:cursor-not-allowed
+      aria-disabled:opacity-50"
+      type="submit"
+      aria-disabled={pending}
+      >
+        Register
+      </button>
+    );
 }
 
 export default RegisterCompanyForm;

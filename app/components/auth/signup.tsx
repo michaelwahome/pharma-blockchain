@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { processSignup } from "@/lib/action";
-import { useFormState } from "react-dom";
+import { useFormState, useFormStatus } from "react-dom";
 
 const SignUpForm = () => {
     const initialState = { message: null, errors: {} };
@@ -199,12 +199,7 @@ const SignUpForm = () => {
                 </div>
             </div>
 
-            <button
-            className="bg-green-800 text-white py-2 px-4 rounded-full hover:bg-green-600 focus:outline-none focus:ring focus:border-green-300"
-            type="submit"
-            >
-            Register
-            </button>
+            <SignUpButton />
 
             <p className="mt-4 text-sm text-gray-600">
                 Already have an account?   
@@ -216,6 +211,21 @@ const SignUpForm = () => {
             </p>
         </form>
     )
+}
+
+function SignUpButton() {
+    const { pending } = useFormStatus();
+   
+    return (
+      <button className="bg-green-800 text-white py-2 px-4 rounded-full hover:bg-green-600 
+      focus:outline-none focus:ring focus:border-green-300 aria-disabled:cursor-not-allowed
+      aria-disabled:opacity-50"
+      type="submit"
+      aria-disabled={pending}
+      >
+        Register
+      </button>
+    );
 }
 
 export default SignUpForm;

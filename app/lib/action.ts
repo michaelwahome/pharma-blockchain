@@ -5,7 +5,8 @@ import User from "@/models/user";
 import connectDB from "@/lib/mongodb";
 import bcrypt from 'bcrypt';
 import Company from "@/models/company";
-
+import { signIn } from "@/auth";
+import { AuthError } from "next-auth";
 
 export const validatePasswords = (password: string, confPassword: string): boolean => {
     return password.trim() === confPassword.trim();
@@ -77,7 +78,6 @@ export const processSignup = async (prevState: SignUpState, formData: FormData )
     });
     
     if (!validatedSignUpFields.success) {
-        console.log(validatedSignUpFields.error.flatten().fieldErrors)
         return {
             errors: validatedSignUpFields.error.flatten().fieldErrors,
             message: 'Validation failed.',
@@ -123,7 +123,6 @@ export const processSignup = async (prevState: SignUpState, formData: FormData )
           message: 'User created successfully.',
         };
     } catch (error) {
-        console.error('Error creating user:', error);
         return {
           errors: { general: ['Failed to create user'] },
           message: 'User creation failed.',
@@ -194,7 +193,6 @@ export const processRegisterCompany = async (prevState: CompanyRegisterState, fo
     });
     
     if (!validatedCompanyRegisterFields.success) {
-        console.log(validatedCompanyRegisterFields.error.flatten().fieldErrors)
         return {
             errors: validatedCompanyRegisterFields.error.flatten().fieldErrors,
             message: 'Validation failed.',
@@ -239,10 +237,28 @@ export const processRegisterCompany = async (prevState: CompanyRegisterState, fo
           message: 'Company created successfully.',
         };
     } catch (error) {
-        console.error('Error creating company:', error);
         return {
           errors: { general: ['Failed to create company'] },
           message: 'Company creation failed.',
         };
     }
+}
+
+export async function authenticate(
+  prevState: string | undefined,
+  formData: FormData,
+) {
+  try {
+    await signIn('credentials', formData);
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case 'CredentialsSignin':
+          return 'Invalid credentials.';
+        default:
+          return 'Something went wrong.';
+      }
+    }
+    throw error;
+  }
 }

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const HeroSection = () => {
     return (
@@ -9,9 +10,9 @@ const HeroSection = () => {
             Trace the history of your pharmaceutical products, from manufacture to retail, right here at PharmaTrace. 
             Click the link below to get started.
           </p>
-          <button className="bg-green-800 text-white py-2 px-4 rounded-full">
+          <Link href="/signup" className="bg-green-800 text-white py-2 px-4 rounded-full">
             Get Started
-          </button>
+          </Link>
         </div>
   
         <div className="flex-shrink-0 hidden md:block ml-6 ">

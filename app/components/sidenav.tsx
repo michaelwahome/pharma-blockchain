@@ -1,3 +1,4 @@
+import { signOut } from "@/auth";
 import Link from "next/link";
 
 const SideNav = () => {
@@ -18,11 +19,15 @@ const SideNav = () => {
                 </Link>
             </div>
 
-            <div className="row-start-11">
-                <Link href="#" className='text-white'>
-                    Sign Out
-                </Link>
-            </div>
+            <form
+                action={async () => {
+                    'use server';
+                    await signOut();
+                }}
+                className="row-start-11 text-white"
+            >   
+                <button>Sign Out</button>
+            </form>
         </div>
     )
 }
